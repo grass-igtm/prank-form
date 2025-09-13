@@ -3,17 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <title>Prank Link Generator</title>
+  <style>
+    button:disabled {
+      background-color: gray;
+      color: #666;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 <body>
   <h2>Generate Your Prank Link</h2>
-  <form action="https://relposter.onrender.com/aduqY0" method="POST">
-    <label for="victimName">Victim's Name:</label><br />
-    <input type="text" id="victimName" name="victimName" required /><br /><br />
-
-    <label for="prankMessage">Prank Message:</label><br />
-    <textarea id="prankMessage" name="prankMessage" rows="4" required></textarea><br /><br />
-
-    <button type="submit">Generate Prank Link</button>
+  <form action="https://your-service-name.onrender.com/aduqY0" method="POST">
+    
+    <label for="title">Title:</label><br />
+    <input type="text" id="title" name="title" required /><br /><br />
+    
+    <label for="description">Description:</label><br />
+    <textarea id="description" name="description" rows="4" required></textarea><br /><br />
+    
+    <label for="type">Website Type:</label><br />
+    <select id="type" name="type" required>
+      <option value="online-shopping">Online Shopping</option>
+      <option value="news">News</option>
+    </select><br /><br />
+    
+    <label for="expiry">Link Expires In:</label><br />
+    <select id="expiry" name="expiry" required>
+      <option value="7">7 days</option>
+      <option value="6">6 days</option>
+      <option value="5">5 days</option>
+      <option value="4">4 days</option>
+      <option value="3">3 days</option>
+      <option value="2">2 days</option>
+    </select><br /><br />
+    
+    <label for="imageUrl">Image URL:</label><br />
+    <input type="url" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg" /><br /><br />
+    
+    <button type="submit" id="generateBtn" disabled>Generate</button>
   </form>
+
+  <script>
+    const titleInput = document.getElementById('title');
+    const descInput = document.getElementById('description');
+    const generateBtn = document.getElementById('generateBtn');
+
+    function toggleButton() {
+      const titleFilled = titleInput.value.trim().length > 0;
+      const descFilled = descInput.value.trim().length > 0;
+      generateBtn.disabled = !(titleFilled && descFilled);
+    }
+
+    titleInput.addEventListener('input', toggleButton);
+    descInput.addEventListener('input', toggleButton);
+  </script>
 </body>
 </html>
