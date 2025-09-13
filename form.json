@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prank Link Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: gray;
+      color: white;
+      border: none;
+      cursor: not-allowed;
+    }
+    button.enabled {
+      background-color: #007bff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Generate Your Prank Link</h2>
+  <form id="prankForm">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required />
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+
+    <label for="type">Website Type:</label>
+    <select id="type" name="type" required>
+      <option value="online-shopping">Online Shopping</option>
+      <option value="news">News</option>
+    </select>
+
+    <label for="expiry">Link Ex
