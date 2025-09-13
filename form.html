@@ -4,30 +4,56 @@
   <meta charset="UTF-8" />
   <title>Prank Link Generator</title>
   <style>
-    button:disabled {
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="url"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
       background-color: gray;
-      color: #666;
+      color: white;
+      border: none;
       cursor: not-allowed;
+    }
+    button.enabled {
+      background-color: #007bff;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <h2>Generate Your Prank Link</h2>
-  <form action="https://your-service-name.onrender.com/aduqY0" method="POST">
-    
-    <label for="title">Title:</label><br />
-    <input type="text" id="title" name="title" required /><br /><br />
-    
-    <label for="description">Description:</label><br />
-    <textarea id="description" name="description" rows="4" required></textarea><br /><br />
-    
-    <label for="type">Website Type:</label><br />
+  <form id="prankForm">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required />
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+
+    <label for="type">Website Type:</label>
     <select id="type" name="type" required>
       <option value="online-shopping">Online Shopping</option>
       <option value="news">News</option>
-    </select><br /><br />
-    
-    <label for="expiry">Link Expires In:</label><br />
+    </select>
+
+    <label for="expiry">Link Expires In:</label>
     <select id="expiry" name="expiry" required>
       <option value="7">7 days</option>
       <option value="6">6 days</option>
@@ -35,27 +61,72 @@
       <option value="4">4 days</option>
       <option value="3">3 days</option>
       <option value="2">2 days</option>
-    </select><br /><br />
-    
-    <label for="imageUrl">Image URL:</label><br />
-    <input type="url" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg" /><br /><br />
-    
-    <button type="submit" id="generateBtn" disabled>Generate</button>
+    </select>
+
+    <label for="imageUrl">Image URL:</label>
+    <input type="url" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg" />
+
+    <button type="submit" id="submitBtn" disabled>Generate</button>
   </form>
 
   <script>
+    const form = document.getElementById('prankForm');
+    const submitBtn = document.getElementById('submitBtn');
     const titleInput = document.getElementById('title');
     const descInput = document.getElementById('description');
-    const generateBtn = document.getElementById('generateBtn');
 
-    function toggleButton() {
+    function validateForm() {
       const titleFilled = titleInput.value.trim().length > 0;
       const descFilled = descInput.value.trim().length > 0;
-      generateBtn.disabled = !(titleFilled && descFilled);
+      if (titleFilled && descFilled) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('enabled');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('enabled');
+      }
     }
 
-    titleInput.addEventListener('input', toggleButton);
-    descInput.addEventListener('input', toggleButton);
+    titleInput.addEventListener('input', validateForm);
+    descInput.addEventListener('input', validateForm);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        title: titleInput.value.trim(),
+        description: descInput.value.trim(),
+        type: document.getElementById('type').value,
+        expiry: document.getElementById('expiry').value,
+        imageUrl: document.getElementById('imageUrl').value.trim()
+      };
+
+      try {
+        const response = await fetch('https://your-service-name.onrender.com/aduqY0', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          const text = await response.text();
+          try {
+            const result = JSON.parse(text);
+            alert('Prank link generated: ' + result.link);
+          } catch {
+            alert('Unexpected server response: ' + text);
+          }
+          form.reset();
+          validateForm();
+        } else {
+          alert('Failed to generate prank link. Please try again.');
+        }
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    });
+
+    validateForm();
   </script>
 </body>
 </html>
